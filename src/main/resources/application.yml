@@ -24,5 +24,9 @@ spring:
             user-info-uri: https://api.spotify.com/v1/me
             user-name-attribute: id
 
+spotify:
+  api:
+    base-url: https://api.spotify.com/v1
+
 server:
   port: 8080
