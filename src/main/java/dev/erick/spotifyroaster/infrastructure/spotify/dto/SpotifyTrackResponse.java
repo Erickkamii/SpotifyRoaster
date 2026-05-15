@@ -1,5 +1,6 @@
 package dev.erick.spotifyroaster.infrastructure.spotify.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import dev.erick.spotifyroaster.domain.model.Track;
 
 import java.util.List;
@@ -8,7 +9,9 @@ public record SpotifyTrackResponse(
         String id,
         String name,
         List<SpotifyArtistSummaryResponse> artists,
-        Integer popularity,
+        @JsonProperty("duration_ms")
+        Integer durationMs,
+        SpotifyAlbumSummaryResponse album,
         Boolean explicit
 ) {
     public Track toDomain(){
@@ -18,12 +21,17 @@ public record SpotifyTrackResponse(
                     .map(SpotifyArtistSummaryResponse::name)
                     .toList();
 
+        var releaseDate = (album != null && album.releaseDate() != null)
+                ? album.releaseDate()
+                : "Unknown";
+
         return new Track(
                 id,
                 name,
                 artistsName,
-                popularity != null ? popularity : 0,
-                explicit
+                durationMs,
+                explicit,
+                releaseDate
         );
     }
 
@@ -32,4 +40,10 @@ public record SpotifyTrackResponse(
             String name
     ){
     }
+
+    public record SpotifyAlbumSummaryResponse(
+            String id,
+            @JsonProperty("release_date")
+            String releaseDate
+    ){}
 }

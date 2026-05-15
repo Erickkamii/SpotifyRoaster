@@ -1,7 +1,9 @@
 package dev.erick.spotifyroaster.interfaces.rest;
 
 import dev.erick.spotifyroaster.application.port.out.SpotifyProvider;
+import dev.erick.spotifyroaster.domain.model.Artist;
 import dev.erick.spotifyroaster.domain.model.Track;
+import dev.erick.spotifyroaster.domain.model.UserProfile;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClient;
@@ -26,5 +28,19 @@ public class SpotifyDebugController {
     public List<Track> topTracks(@RegisteredOAuth2AuthorizedClient("spotify") OAuth2AuthorizedClient authorizedClient){
         logger.debug("Getting tracks from Spotify");
         return spotifyProvider.getTopTracks(authorizedClient.getAccessToken().getTokenValue());
+    }
+
+    @GetMapping("/top-artists")
+    public List<Artist> topArtists(@RegisteredOAuth2AuthorizedClient("spotify") OAuth2AuthorizedClient authorizedClient){
+        logger.debug("Getting artists from Spotify");
+        return spotifyProvider.getTopArtists(authorizedClient.getAccessToken().getTokenValue());
+    }
+
+    @GetMapping("/profile")
+    public UserProfile profile(@RegisteredOAuth2AuthorizedClient("spotify") OAuth2AuthorizedClient authorizedClient){
+        logger.debug("Getting profile from Spotify");
+        var tracks = spotifyProvider.getTopTracks(authorizedClient.getAccessToken().getTokenValue());
+        var artists = spotifyProvider.getTopArtists(authorizedClient.getAccessToken().getTokenValue());
+        return UserProfile.from(tracks, artists);
     }
 }

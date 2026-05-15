@@ -7,8 +7,9 @@ public record Track(
         String id,
         String name,
         List<String> artistsNames,
-        int popularity,
-        boolean explicit
+        int duration,
+        boolean explicit,
+        String releaseDate
 ) {
     public Track{
         Objects.requireNonNull(id, "Track ID is required");
@@ -16,8 +17,8 @@ public record Track(
 
         artistsNames = artistsNames == null ? List.of() : List.copyOf(artistsNames);
 
-        if (popularity < 0 || popularity > 100) {
-            throw new IllegalArgumentException("Popularity must be between 0 and 100");
+        if (duration < 0) {
+            throw new IllegalArgumentException("Duration must not be negative");
         }
     }
 }

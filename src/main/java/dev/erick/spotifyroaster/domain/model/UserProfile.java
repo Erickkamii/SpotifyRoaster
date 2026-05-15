@@ -8,8 +8,7 @@ import java.util.stream.Collectors;
 public record UserProfile(
         List<Track> topTracks,
         List<Artist> topArtists,
-        double averageTrackPopularity,
-        double averageArtistPopularity,
+        double averageTrackDuration,
         List<String> dominantGenres
 ) {
     public UserProfile{
@@ -23,12 +22,7 @@ public record UserProfile(
         var topArtists = List.copyOf(artists);
 
         double averageTrackPopularity = topTracks.stream()
-                .mapToInt(Track::popularity)
-                .average()
-                .orElse(0.0);
-
-        double averageArtistPopularity = topArtists.stream()
-                .mapToInt(Artist::popularity)
+                .mapToInt(Track::duration)
                 .average()
                 .orElse(0.0);
 
@@ -49,7 +43,6 @@ public record UserProfile(
                 topTracks,
                 topArtists,
                 averageTrackPopularity,
-                averageArtistPopularity,
                 dominantGenres
         );
     }

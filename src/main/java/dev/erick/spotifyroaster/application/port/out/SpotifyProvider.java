@@ -8,7 +8,5 @@ import java.util.List;
 public interface SpotifyProvider {
     List<Track> getTopTracks(String accessToken);
 
-    default List<Artist> getTopArtists(String accessToken) {
-        return List.of();
-    }
+    List<Artist> getTopArtists(String accessToken);
 }
