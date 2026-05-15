@@ -1,0 +1,18 @@
+package dev.erick.spotifyroaster.interfaces.rest;
+
+import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import java.util.Map;
+
+@RestController
+public class AuthDebugController {
+    @GetMapping("/api/v1/me")
+    public Map<String, Object> me(OAuth2AuthenticationToken token) {
+        return Map.of(
+                "name", token.getName(),
+                "authorities", token.getAuthorities()
+        );
+    }
+}
